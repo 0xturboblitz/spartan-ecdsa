@@ -28,6 +28,7 @@ dist/
 *.r1cs
 *.sym
 !test_circuit.r1cs
+!rsa.r1cs
 
 packages/prover/test_circuit/test_circuit_js/
 #input files

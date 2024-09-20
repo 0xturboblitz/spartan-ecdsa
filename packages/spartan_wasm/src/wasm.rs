@@ -316,4 +316,39 @@ mod test {
 
         assert!(result.unwrap());
     }
+
+    #[test]
+    fn check_nizk_register_rsa_65537_sha256() {
+        let root = current_dir().unwrap();
+        let circuit =
+            fs::read(root.join("register_rsa_65537_sha256/register_rsa_65537_sha256.circuit"))
+                .unwrap();
+        let vars = fs::read(root.join("register_rsa_65537_sha256/witness.wtns")).unwrap();
+
+        let public_inputs =
+            ["8518753152044246090169372947057357973469996808638122125210848696986717482788"]
+                .iter()
+                .map(|s| F1::from_str_vartime(s).unwrap().to_repr())
+                .flatten()
+                .collect::<Vec<u8>>();
+
+        let proof = prove(
+            circuit.as_slice(),
+            vars.as_slice(),
+            public_inputs.as_slice(),
+        )
+        .unwrap();
+
+        println!("proof: {:?}", proof);
+
+        let result = verify(
+            circuit.as_slice(),
+            proof.as_slice(),
+            public_inputs.as_slice(),
+        );
+
+        println!("result: {:?}", result);
+
+        assert!(result.unwrap());
+    }
 }
